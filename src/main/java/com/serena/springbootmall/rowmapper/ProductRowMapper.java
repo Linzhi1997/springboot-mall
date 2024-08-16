@@ -25,8 +25,8 @@ public class ProductRowMapper implements RowMapper<Product> // 表示要轉換�
         product.setPrice(rs.getInt("price"));
         product.setStock(rs.getInt("stock"));
         product.setDescription(rs.getString("description"));
-        product.setCreateDate(rs.getTime("create_date"));
-        product.setLastModifiedDate(rs.getTime("last_modified_date"));
+        product.setCreateDate(rs.getTimestamp("create_date"));
+        product.setLastModifiedDate(rs.getTimestamp("last_modified_date"));
         // set完畢 return product
         return product;
     }
