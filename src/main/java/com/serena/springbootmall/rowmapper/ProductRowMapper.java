@@ -16,8 +16,9 @@ public class ProductRowMapper implements RowMapper<Product> // 表示要轉換�
         product.setProductId(rs.getInt("product_id"));
         product.setProductName(rs.getString("product_name"));
 
+        // 將資料庫中的字串值轉換為枚舉類型
         String categoryStr = rs.getString("category"); // 從database取出來是String類型的字串
-        ProductCategory category = ProductCategory.valueOf(categoryStr); // Stirng轉化成Enum類型
+        ProductCategory category = ProductCategory.valueOf(categoryStr); // .valueOf() 去Enum裡面找對應值
         product.setCategory(category); // 到set方法內做設定
 //        product.setCategory(ProductCategory.valueOf(rs.getString("category")));
 

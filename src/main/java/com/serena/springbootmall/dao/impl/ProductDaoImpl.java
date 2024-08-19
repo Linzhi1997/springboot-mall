@@ -1,10 +1,14 @@
 package com.serena.springbootmall.dao.impl;
 
 import com.serena.springbootmall.dao.ProductDao;
+import com.serena.springbootmall.dto.ProductRequest;
 import com.serena.springbootmall.model.Product;
 import com.serena.springbootmall.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -30,5 +34,36 @@ public class ProductDaoImpl implements ProductDao {
         else {
             return null;
         }
+    }
+
+    public Integer createProduct(ProductRequest productRequest){
+        // sql 記得帶上時間
+        // sql product(table row_name) value(:變數) map.put("變數",productRequest get前端對應的json參數)
+        // productRequest get的參數對應到變數 變數寫入table (而ProductCategory無法對應varchar,所以需轉換成String)
+        String sql ="INSERT INTO product (product_name, category, image_url, price, stock, description,create_date, last_modified_date ) " +
+                "VALUE (:productName,:category,:imageUrl,:price,:stock,:description,:createDate,:lastModifiedDate)";
+        Map<String,Object> map =new HashMap<>();
+        map.put("productName",productRequest.getProductName()); // 輸出{productName="Toyota"}
+        map.put("category",productRequest.getCategory().toString()); // 輸出{category="CAR"}
+        // (String類,String類) productRequest是ProductCategory類()enum
+        // 需要.toString() 轉換
+        // 輸出{category=CAR}
+        map.put("imageUrl",productRequest.getImageUrl());
+        map.put("price",productRequest.getPrice());// 輸出{price=28000}
+        map.put("stock",productRequest.getStock());
+        map.put("description",productRequest.getDescription());
+
+        // 記錄當下時間點
+        Date now = new Date();
+        map.put("createDate",now);
+        map.put("lastModifiedDate",now);
+        // 維持順序
+        KeyHolder keyHolder =new GeneratedKeyHolder();
+
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map),keyHolder);
+
+        int productId = keyHolder.getKey().intValue();
+        // 回傳id
+        return productId;
     }
 }

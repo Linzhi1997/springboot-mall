@@ -1,28 +1,21 @@
-package com.serena.springbootmall.model;
+package com.serena.springbootmall.dto;
 
 import com.serena.springbootmall.constant.ProductCategory;
-import org.springframework.stereotype.Component;
+import jakarta.validation.constraints.*;
 
-import java.util.Date;
-@Component
-public class Product {
-    private Integer productId;
+public class ProductRequest {
+    @NotNull
     private String productName;
+    @NotNull
     private ProductCategory category;
+    @NotNull
     private String imageUrl;
+    @NotNull
     private Integer price;
+    @NotNull
     private Integer stock;
+
     private String description;
-    private Date createDate;
-    private Date lastModifiedDate;
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
 
     public String getProductName() {
         return productName;
@@ -56,14 +49,6 @@ public class Product {
         this.price = price;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Integer getStock() {
         return stock;
     }
@@ -72,19 +57,11 @@ public class Product {
         this.stock = stock;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
