@@ -66,4 +66,24 @@ public class ProductDaoImpl implements ProductDao {
         // 回傳id
         return productId;
     }
+
+    public void updateProduct(Integer productId,ProductRequest productRequest){
+        String sql = "UPDATE product " +
+                "SET product_name=:productName, category=:category, image_url=:imageUrl, price=:price, stock=:stock, description=:description, last_modified_date=:lastModifiedDate " +
+                "WHERE product_id=:productId";
+        // 要更新lastModifiedDate的值
+        Map<String,Object> map = new HashMap<>();
+        map.put("productId",productId); //id也要設
+
+        map.put("productName",productRequest.getProductName());
+        map.put("category",productRequest.getCategory().toString());
+        map.put("imageUrl",productRequest.getImageUrl());
+        map.put("price",productRequest.getPrice());
+        map.put("stock",productRequest.getStock());
+        map.put("description",productRequest.getDescription());
+        map.put("lastModifiedDate",new Date());
+
+        namedParameterJdbcTemplate.update(sql,map);
+
+    }
 }

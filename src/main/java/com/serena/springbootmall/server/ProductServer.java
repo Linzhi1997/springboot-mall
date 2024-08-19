@@ -8,4 +8,6 @@ public interface ProductServer
     public Product getProductById(Integer id);
 
     public Integer createProduct(ProductRequest productRequest);
+
+    public void updateProduct(Integer productId,ProductRequest productRequest);
 }
