@@ -9,11 +9,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ProductControllerImpl {
+
     @Autowired
     ProductServer productServer;
-    @GetMapping("/product/{id}")
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProducts(){
+        List<Product> products = productServer.getProducts();
+
+        return ResponseEntity.status(HttpStatus.OK).body(products);
+    }
+
+    @GetMapping("/products/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Integer id) {
         Product product = productServer.getProductById(id);
         if(product!=null){
@@ -22,7 +32,7 @@ public class ProductControllerImpl {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // build() 用於構建並返回一個空的 ResponseEntity，僅僅包含 HTTP 狀態碼和可能的回應header，而沒有任何回應體
         }
     }
-    @PostMapping("/product")
+    @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) //要加 @Valid @NotNull才會生效
     {
         Integer productId = productServer.createProduct(productRequest); // 預期createProduct會去資料庫中創建商品出來 & 返回id
@@ -31,7 +41,7 @@ public class ProductControllerImpl {
         return ResponseEntity.status(HttpStatus.CREATED).body(product);// (前端輸入的值+getId)=product 回傳給前端
     }
 
-    @PutMapping("/product/{productId}")
+    @PutMapping("/products/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable Integer productId
                                                 ,@RequestBody @Valid ProductRequest productRequest){
                                                 // 限制前端只能修改ProductRequest的值
@@ -46,5 +56,11 @@ public class ProductControllerImpl {
         Product updateProduct = productServer.getProductById(productId);
         return ResponseEntity.status(HttpStatus.OK).body(updateProduct);
 
+    }
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<Product> deleteProduct(@PathVariable Integer productId){
+        productServer.deleteProduct(productId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -10,13 +10,25 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-
 import java.util.*;
 @Component
 public class ProductDaoImpl implements ProductDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+
+    @Override
+    public List<Product> getProducts() {
+        String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, create_date, last_modified_date  " +
+                    "FROM product";
+        Map<String,Object> map = new HashMap<>();
+
+        // 查詢一筆資料 返回object 查詢多筆資料 返回List<Object>
+        List<Product> products = namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
+
+        return products;
+    }
 
     @Override
     public Product getProductById(Integer id) {
@@ -36,6 +48,7 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
+    @Override
     public Integer createProduct(ProductRequest productRequest){
         // sql 記得帶上時間
         // sql product(table row_name) value(:變數) map.put("變數",productRequest get前端對應的json參數)
@@ -67,6 +80,7 @@ public class ProductDaoImpl implements ProductDao {
         return productId;
     }
 
+    @Override
     public void updateProduct(Integer productId,ProductRequest productRequest){
         String sql = "UPDATE product " +
                 "SET product_name=:productName, category=:category, image_url=:imageUrl, price=:price, stock=:stock, description=:description, last_modified_date=:lastModifiedDate " +
@@ -85,5 +99,15 @@ public class ProductDaoImpl implements ProductDao {
 
         namedParameterJdbcTemplate.update(sql,map);
 
+    }
+
+    @Override
+    public void deleteProduct(Integer productId) {
+        String sql = "DELETE FROM product WHERE product_id=:productId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+
+        namedParameterJdbcTemplate.update(sql, map);
     }
 }
