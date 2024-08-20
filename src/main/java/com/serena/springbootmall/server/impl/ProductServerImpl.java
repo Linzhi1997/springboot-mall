@@ -2,6 +2,7 @@ package com.serena.springbootmall.server.impl;
 
 import com.serena.springbootmall.constant.ProductCategory;
 import com.serena.springbootmall.dao.ProductDao;
+import com.serena.springbootmall.dto.ProductQueryParams;
 import com.serena.springbootmall.dto.ProductRequest;
 import com.serena.springbootmall.model.Product;
 import com.serena.springbootmall.server.ProductServer;
@@ -19,8 +20,8 @@ public class ProductServerImpl implements ProductServer {
 
 
     @Override
-    public List<Product> getProducts(ProductCategory productCategory,String search) {
-        return productDao.getProducts(productCategory,search);
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams);
     }
 
     @Override
@@ -42,6 +43,4 @@ public class ProductServerImpl implements ProductServer {
     public void deleteProduct(Integer productId) {
         productDao.deleteProduct(productId);
     }
-
-
 }

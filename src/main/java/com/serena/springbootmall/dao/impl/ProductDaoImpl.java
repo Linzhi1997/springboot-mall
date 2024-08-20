@@ -2,38 +2,38 @@ package com.serena.springbootmall.dao.impl;
 
 import com.serena.springbootmall.constant.ProductCategory;
 import com.serena.springbootmall.dao.ProductDao;
+import com.serena.springbootmall.dto.ProductQueryParams;
 import com.serena.springbootmall.dto.ProductRequest;
 import com.serena.springbootmall.model.Product;
 import com.serena.springbootmall.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import java.util.*;
+
 @Component
 public class ProductDaoImpl implements ProductDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-
     @Override
-    public List<Product> getProducts(ProductCategory productCategory, String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, create_date, last_modified_date  " +
                 "FROM product WHERE 1=1";
         Map<String, Object> map = new HashMap<>();
 
-        if (productCategory != null) {
+        if (productQueryParams.getProductCategory() != null) {
             sql = sql + " AND category = :productCategory"; // AND前面要空格
-            map.put("productCategory", productCategory.name()); // {sql變數productCategory,前端傳入具體值}
+            map.put("productCategory", productQueryParams.getProductCategory().name()); // {sql變數productCategory,前端傳入具體值}
         }
 
-        if (search != null) {
+        if (productQueryParams.getSearch() != null) {
             sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + search + "%"); // "%"要加在map這裡，JdbcTemplate的限制
+            map.put("search", "%" + productQueryParams.getSearch() + "%"); // "%"要加在map這裡，JdbcTemplate的限制
         }
 
         // 查詢一筆資料 返回object 查詢多筆資料 返回List<Object>

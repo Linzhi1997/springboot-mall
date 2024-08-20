@@ -1,6 +1,7 @@
 package com.serena.springbootmall.controller;
 
 import com.serena.springbootmall.constant.ProductCategory;
+import com.serena.springbootmall.dto.ProductQueryParams;
 import com.serena.springbootmall.dto.ProductRequest;
 import com.serena.springbootmall.model.Product;
 import com.serena.springbootmall.server.ProductServer;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -17,13 +17,17 @@ public class ProductControllerImpl {
 
     @Autowired
     ProductServer productServer;
+    @Autowired
+    ProductQueryParams productQueryParams;
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam (required = false) ProductCategory productCategory, //前端自動String轉換Enum
             @RequestParam (required = false) String search
     ) {
+        productQueryParams.setProductCategory(productCategory);
+        productQueryParams.setSearch(search);
 
-        List<Product> products = productServer.getProducts(productCategory,search);
+        List<Product> products = productServer.getProducts(productQueryParams);
 
         return ResponseEntity.status(HttpStatus.OK).body(products);
         // Reatful API特色
