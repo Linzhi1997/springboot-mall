@@ -6,12 +6,15 @@ import com.serena.springbootmall.dto.ProductRequest;
 import com.serena.springbootmall.model.Product;
 import com.serena.springbootmall.server.ProductServer;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@Validated //使@Max(100) @Min(0)生效
 @RestController
 public class ProductControllerImpl {
 
@@ -26,12 +29,17 @@ public class ProductControllerImpl {
             @RequestParam (required = false) String search,
             // 排序 Soring
             @RequestParam (defaultValue = "create_date") String byOrder,
-            @RequestParam (defaultValue = "desc") String sort
+            @RequestParam (defaultValue = "desc") String sort,
+            // 分頁 Paging
+            @RequestParam (defaultValue = "5") @Max(100) @Min(0) Integer limit,
+            @RequestParam (defaultValue = "0") @Min(0) Integer offset
     ) {
         productQueryParams.setProductCategory(productCategory);
         productQueryParams.setSearch(search);
         productQueryParams.setByOrder(byOrder);
         productQueryParams.setSort(sort);
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
 
         List<Product> products = productServer.getProducts(productQueryParams);
 

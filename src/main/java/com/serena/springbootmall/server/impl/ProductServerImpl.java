@@ -18,7 +18,6 @@ public class ProductServerImpl implements ProductServer {
     @Autowired
     ProductDao productDao;
 
-
     @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
         return productDao.getProducts(productQueryParams);
