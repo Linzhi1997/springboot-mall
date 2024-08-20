@@ -21,11 +21,17 @@ public class ProductControllerImpl {
     ProductQueryParams productQueryParams;
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
+            // 查詢條件 filtering
             @RequestParam (required = false) ProductCategory productCategory, //前端自動String轉換Enum
-            @RequestParam (required = false) String search
+            @RequestParam (required = false) String search,
+            // 排序 Soring
+            @RequestParam (defaultValue = "create_date") String byOrder,
+            @RequestParam (defaultValue = "desc") String sort
     ) {
         productQueryParams.setProductCategory(productCategory);
         productQueryParams.setSearch(search);
+        productQueryParams.setByOrder(byOrder);
+        productQueryParams.setSort(sort);
 
         List<Product> products = productServer.getProducts(productQueryParams);
 
