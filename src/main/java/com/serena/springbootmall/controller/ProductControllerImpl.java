@@ -1,5 +1,6 @@
 package com.serena.springbootmall.controller;
 
+import com.serena.springbootmall.constant.ProductCategory;
 import com.serena.springbootmall.dto.ProductRequest;
 import com.serena.springbootmall.model.Product;
 import com.serena.springbootmall.server.ProductServer;
@@ -17,10 +18,16 @@ public class ProductControllerImpl {
     @Autowired
     ProductServer productServer;
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(){
-        List<Product> products = productServer.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam (required = false) ProductCategory productCategory, //前端自動String轉換Enum
+            @RequestParam (required = false) String search
+    ) {
+
+        List<Product> products = productServer.getProducts(productCategory,search);
 
         return ResponseEntity.status(HttpStatus.OK).body(products);
+        // Reatful API特色
+        // 查詢的物件是List<Product> 就算列表為空 HttpStatus=OK
     }
 
     @GetMapping("/products/{id}")
@@ -31,6 +38,7 @@ public class ProductControllerImpl {
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // build() 用於構建並返回一個空的 ResponseEntity，僅僅包含 HTTP 狀態碼和可能的回應header，而沒有任何回應體
         }
+        // 查詢的物件是Product 要去判斷是否為空
     }
     @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) //要加 @Valid @NotNull才會生效
