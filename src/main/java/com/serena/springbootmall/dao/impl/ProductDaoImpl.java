@@ -1,6 +1,5 @@
 package com.serena.springbootmall.dao.impl;
 
-import com.serena.springbootmall.constant.ProductCategory;
 import com.serena.springbootmall.dao.ProductDao;
 import com.serena.springbootmall.dto.ProductQueryParams;
 import com.serena.springbootmall.dto.ProductRequest;
@@ -21,21 +20,25 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
+    public Integer getTotal(ProductQueryParams productQueryParams) {
+        String sql = "SELECT count(*) FROM product WHERE 1=1";
+        Map<String, Object> map = new HashMap<>();
+        // 查詢條件 使用此方法前一定有個sql
+        // 查詢條件不同 總筆數也不同
+        sql = addFilterSql(sql, map, productQueryParams);
+
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return total;
+    }
+
+    @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, description, create_date, last_modified_date  " +
                 "FROM product WHERE 1=1";
         Map<String, Object> map = new HashMap<>();
 
-        // 查詢條件
-        if (productQueryParams.getProductCategory() != null) {
-            sql = sql + " AND category = :productCategory"; // AND前面要空格
-            map.put("productCategory", productQueryParams.getProductCategory().name()); // {sql變數productCategory,前端傳入具體值}
-        }
-
-        if (productQueryParams.getSearch() != null) {
-            sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParams.getSearch() + "%"); // "%"要加在map這裡，JdbcTemplate的限制
-        }
+        // 查詢條件 使用此方法前一定有個sql
+        sql = addFilterSql(sql,map,productQueryParams);
         // 預設非null
         // 排序
         sql = sql + " ORDER BY "+productQueryParams.getByOrder()+" "+productQueryParams.getSort();
@@ -129,5 +132,21 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productId", productId);
 
         namedParameterJdbcTemplate.update(sql, map);
+    }
+    // private 只有這個class可使用
+    // Filter 一個method時優先使用private
+    // 限制方法"使用範圍"，方便"後續維護" !!!!!!!!!
+    private String addFilterSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams) {
+        // 查詢條件
+        if (productQueryParams.getProductCategory() != null) {
+            sql = sql + " AND category = :productCategory"; // AND前面要空格
+            map.put("productCategory", productQueryParams.getProductCategory().name()); // {sql變數productCategory,前端傳入具體值}
+        }
+
+        if (productQueryParams.getSearch() != null) {
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch() + "%"); // "%"要加在map這裡，JdbcTemplate的限制
+        }
+        return sql;
     }
 }

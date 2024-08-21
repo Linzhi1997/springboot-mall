@@ -19,6 +19,11 @@ public class ProductServerImpl implements ProductServer {
     ProductDao productDao;
 
     @Override
+    public Integer getTotal(ProductQueryParams productQueryParams) {
+        return productDao.getTotal(productQueryParams);
+    }
+
+    @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
         return productDao.getProducts(productQueryParams);
     }

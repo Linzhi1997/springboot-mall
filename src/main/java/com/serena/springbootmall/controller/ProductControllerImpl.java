@@ -5,6 +5,7 @@ import com.serena.springbootmall.dto.ProductQueryParams;
 import com.serena.springbootmall.dto.ProductRequest;
 import com.serena.springbootmall.model.Product;
 import com.serena.springbootmall.server.ProductServer;
+import com.serena.springbootmall.util.Page;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class ProductControllerImpl {
     @Autowired
     ProductQueryParams productQueryParams;
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             // 查詢條件 filtering
             @RequestParam (required = false) ProductCategory productCategory, //前端自動String轉換Enum
             @RequestParam (required = false) String search,
@@ -41,9 +42,18 @@ public class ProductControllerImpl {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
 
-        List<Product> products = productServer.getProducts(productQueryParams);
+        // 取得 product list
+        List<Product> productList = productServer.getProducts(productQueryParams);
+        // 取得資料總數
+        Integer total=productServer.getTotal(productQueryParams);
+        // 分頁&給前端的分頁資訊
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(productList);
 
-        return ResponseEntity.status(HttpStatus.OK).body(products);
+        return ResponseEntity.status(HttpStatus.OK).body(page); // ResponseEntity<Page<Product>> body(Page<Product>)
         // Reatful API特色
         // 查詢的物件是List<Product> 就算列表為空 HttpStatus=OK
     }

@@ -17,4 +17,6 @@ public interface ProductServer
     public void updateProduct(Integer productId,ProductRequest productRequest);
 
     public void deleteProduct(Integer productId);
+
+    public Integer getTotal(ProductQueryParams productQueryParams);
 }

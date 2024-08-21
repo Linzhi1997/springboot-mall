@@ -19,4 +19,6 @@ public interface ProductDao {
 
     public void deleteProduct(Integer productId);
 
+    public Integer getTotal(ProductQueryParams productQueryParams);
+
 }
