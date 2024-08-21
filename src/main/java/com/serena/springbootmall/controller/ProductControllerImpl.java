@@ -29,7 +29,7 @@ public class ProductControllerImpl {
             @RequestParam (required = false) ProductCategory productCategory, //前端自動String轉換Enum
             @RequestParam (required = false) String search,
             // 排序 Soring
-            @RequestParam (defaultValue = "create_date") String byOrder,
+            @RequestParam (defaultValue = "create_date") String orderBy,
             @RequestParam (defaultValue = "desc") String sort,
             // 分頁 Paging
             @RequestParam (defaultValue = "5") @Max(100) @Min(0) Integer limit,
@@ -37,7 +37,7 @@ public class ProductControllerImpl {
     ) {
         productQueryParams.setProductCategory(productCategory);
         productQueryParams.setSearch(search);
-        productQueryParams.setByOrder(byOrder);
+        productQueryParams.setOrderBy(orderBy);
         productQueryParams.setSort(sort);
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);

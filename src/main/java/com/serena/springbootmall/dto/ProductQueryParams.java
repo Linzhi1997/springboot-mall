@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class ProductQueryParams {
     ProductCategory productCategory;
     String search;
-    String byOrder;
+    String orderBy;
     String sort;
     Integer limit;
     Integer offset;
@@ -28,12 +28,12 @@ public class ProductQueryParams {
         this.offset = offset;
     }
 
-    public String getByOrder() {
-        return byOrder;
+    public String getOrderBy() {
+        return orderBy;
     }
 
-    public void setByOrder(String byOrder) {
-        this.byOrder = byOrder;
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
     }
 
     public String getSort() {

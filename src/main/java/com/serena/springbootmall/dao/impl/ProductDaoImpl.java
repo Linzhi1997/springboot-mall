@@ -41,7 +41,7 @@ public class ProductDaoImpl implements ProductDao {
         sql = addFilterSql(sql,map,productQueryParams);
         // 預設非null
         // 排序
-        sql = sql + " ORDER BY "+productQueryParams.getByOrder()+" "+productQueryParams.getSort();
+        sql = sql + " ORDER BY "+productQueryParams.getOrderBy()+" "+productQueryParams.getSort();
         // 分頁
         sql = sql+" LIMIT :limit OFFSET :offset"; // 在order by後面
         map.put("limit",productQueryParams.getLimit());
@@ -77,7 +77,7 @@ public class ProductDaoImpl implements ProductDao {
         // sql product(table row_name) value(:變數) map.put("變數",productRequest get前端對應的json參數)
         // productRequest get的參數對應到變數 變數寫入table (而ProductCategory無法對應varchar,所以需轉換成String)
         String sql ="INSERT INTO product (product_name, category, image_url, price, stock, description,create_date, last_modified_date ) " +
-                "VALUE (:productName,:category,:imageUrl,:price,:stock,:description,:createDate,:lastModifiedDate)";
+                "VALUES (:productName,:category,:imageUrl,:price,:stock,:description,:createDate,:lastModifiedDate)";
         Map<String,Object> map =new HashMap<>();
         map.put("productName",productRequest.getProductName()); // 輸出{productName="Toyota"}
         map.put("category",productRequest.getCategory().toString()); // 輸出{category="CAR"}
