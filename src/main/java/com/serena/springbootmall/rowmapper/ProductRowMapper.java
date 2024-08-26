@@ -12,7 +12,7 @@ public class ProductRowMapper implements RowMapper<Product> // 表示要轉換�
     @Override
     public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
         Product product = new Product();
-        // ResultSet去取controller傳入的參數，放到sql"目的名字"
+        // ResultSet取得SELECT出來的那些數據
         product.setProductId(rs.getInt("product_id"));
         product.setProductName(rs.getString("product_name"));
 

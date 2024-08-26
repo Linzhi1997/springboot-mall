@@ -4,9 +4,9 @@ import com.serena.springbootmall.dto.UserRegisterRequest;
 import com.serena.springbootmall.model.User;
 
 public interface UserDao {
-    public Integer createUser(UserRegisterRequest userRegisterRequest);
+    Integer createUser(UserRegisterRequest userRegisterRequest);
 
-    public User getById(Integer userId);
+    User getById(Integer userId);
 
-    public User getByEmail(String email);
+    User getByEmail(String email);
 }
