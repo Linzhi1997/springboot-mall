@@ -6,17 +6,16 @@ import com.serena.springbootmall.dto.ProductRequest;
 import com.serena.springbootmall.model.Product;
 import java.util.*;
 
-public interface ProductServer
-{
-    public List<Product> getProducts(ProductQueryParams productQueryParams);
+public interface ProductServer {
+    List<Product> getProducts(ProductQueryParams productQueryParams);
 
-    public Product getProductById(Integer id);
+    Product getProductById(Integer id);
 
-    public Integer createProduct(ProductRequest productRequest);
+    Integer createProduct(ProductRequest productRequest);
 
-    public void updateProduct(Integer productId,ProductRequest productRequest);
+    void updateProduct(Integer productId,ProductRequest productRequest);
 
-    public void deleteProduct(Integer productId);
+    void deleteProduct(Integer productId);
 
-    public Integer getTotal(ProductQueryParams productQueryParams);
+    Integer getTotal(ProductQueryParams productQueryParams);
 }

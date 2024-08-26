@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface UserServer {
-    public Integer register(UserRegisterRequest userRegisterRequest);
+    Integer register(UserRegisterRequest userRegisterRequest);
 
-    public User getById(Integer userId);
+    User getById(Integer userId);
 
-    public User login(UserLoginRequest userLoginRequest);
+    User login(UserLoginRequest userLoginRequest);
 }

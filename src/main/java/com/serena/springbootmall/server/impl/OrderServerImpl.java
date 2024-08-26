@@ -5,6 +5,7 @@ import com.serena.springbootmall.dao.ProductDao;
 import com.serena.springbootmall.dao.UserDao;
 import com.serena.springbootmall.dto.BuyItem;
 import com.serena.springbootmall.dto.CreateOrderRequest;
+import com.serena.springbootmall.dto.OrderQueryParams;
 import com.serena.springbootmall.model.Order;
 import com.serena.springbootmall.model.OrderItem;
 import com.serena.springbootmall.model.Product;
@@ -30,6 +31,25 @@ public class OrderServerImpl implements OrderServer {
     UserDao userDao;
 
     private final static Logger log = LoggerFactory.getLogger(OrderServerImpl.class);
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+        List<Order> orderList = orderDao.getOrders(orderQueryParams);
+        // 遍歷此userId下的所有order
+        for(Order order:orderList){
+            // 獲取每筆訂單詳細資訊，擴充返回order
+            List<OrderItem> orderItemList = orderDao.getOrderItemsByOrderId(order.getOrderId());
+
+            order.setOrderItemList(orderItemList);
+        }
+        return orderList;
+    }
+
+    @Override
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+
+        return orderDao.countOrder(orderQueryParams);
+    }
 
     @Transactional
     @Override

@@ -2,9 +2,9 @@ package com.serena.springbootmall.dao.impl;
 
 
 import com.serena.springbootmall.dao.OrderDao;
+import com.serena.springbootmall.dto.OrderQueryParams;
 import com.serena.springbootmall.model.Order;
 import com.serena.springbootmall.model.OrderItem;
-import com.serena.springbootmall.model.User;
 import com.serena.springbootmall.rowmapper.OrderItemRowMapper;
 import com.serena.springbootmall.rowmapper.OrderRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,43 @@ public class OrderDaoImpl implements OrderDao {
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+        String sql = "SELECT order_id,user_id, total_amount, created_date, last_modified_date FROM`order` WHERE 1=1 ";
+        Map<String,Object> map = new HashMap<>();
+        // 查詢條件：ID
+        sql=addFilterquery(sql,map,orderQueryParams);
+        // 排序（寫死）
+        sql = sql + " ORDER BY created_date DESC ";
+        // 分頁
+        sql = sql + " and LIMIT=:limit OFFSET=:offset";
+        map.put("limit",orderQueryParams.getLimit());
+        map.put("offset",orderQueryParams.getOffset());
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql,map,new OrderRowMapper());
+        return orderList;
+    }
+
+    @Override
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+        // COUNT(*)
+        String sql = "SELECT COUNT(*) FROM `order` WHERE 1=1 ";
+        Map<String,Object> map = new HashMap<>();
+        sql=addFilterquery(sql,map,orderQueryParams);
+        //queryForObject 方法用於執行預期只返回一個結果的查詢
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+
+        return count;
+    }
+
+    public String addFilterquery(String sql,Map<String,Object> map,OrderQueryParams orderQueryParams){
+        if(orderQueryParams.getUsersId() != null) {
+            sql = sql + "and user_id=:userId";
+            map.put("userId", orderQueryParams.getUsersId());
+        }
+        return sql;
+    }
+
+    @Override
     public Order getOrderById(Integer orderId) {
         String sql ="SELECT order_id,user_id, total_amount, created_date, last_modified_date " +
                 "FROM `order` WHERE order_id=:orderId";
@@ -34,7 +71,6 @@ public class OrderDaoImpl implements OrderDao {
             return orderList.get(0);
         } else {
             return null;
-
         }
     }
 
