@@ -22,14 +22,14 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrders(OrderQueryParams orderQueryParams) {
-        String sql = "SELECT order_id,user_id, total_amount, created_date, last_modified_date FROM`order` WHERE 1=1 ";
+        String sql = "SELECT order_id,user_id, total_amount, created_date, last_modified_date FROM `order` WHERE 1=1 ";
         Map<String,Object> map = new HashMap<>();
         // 查詢條件：ID
         sql=addFilterquery(sql,map,orderQueryParams);
         // 排序（寫死）
         sql = sql + " ORDER BY created_date DESC ";
         // 分頁
-        sql = sql + " and LIMIT=:limit OFFSET=:offset";
+        sql = sql + " LIMIT :limit OFFSET :offset "; //接在ORDER BY之後，不用等於
         map.put("limit",orderQueryParams.getLimit());
         map.put("offset",orderQueryParams.getOffset());
 
@@ -40,9 +40,10 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public Integer countOrder(OrderQueryParams orderQueryParams) {
         // COUNT(*)
+        // 計算符合條件的總筆數，返回值是Integer類型
         String sql = "SELECT COUNT(*) FROM `order` WHERE 1=1 ";
         Map<String,Object> map = new HashMap<>();
-        sql=addFilterquery(sql,map,orderQueryParams);
+        sql = addFilterquery(sql,map,orderQueryParams);
         //queryForObject 方法用於執行預期只返回一個結果的查詢
         Integer count = namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
 

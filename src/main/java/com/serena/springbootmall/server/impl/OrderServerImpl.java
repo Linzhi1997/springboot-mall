@@ -82,7 +82,7 @@ public class OrderServerImpl implements OrderServer {
 
             // 計算總價錢
             int amount = buyItem.getQuantity() * product.getPrice();
-            totalAmount = totalAmount +amount;
+            totalAmount = totalAmount + amount;
 
             // 轉換 BuyItem to OrderItem
             OrderItem orderItem = new OrderItem();

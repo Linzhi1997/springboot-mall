@@ -35,7 +35,7 @@ public class OrderController {
     @GetMapping("/users/{userId}/orders")
     public ResponseEntity<Page<Order>>getOrders(@PathVariable Integer userId,
                                                 @RequestParam(defaultValue ="10") @Max(1000) @Min(0) Integer limit,
-                                                @RequestParam(defaultValue ="0") @Max(0) @Min(0)   Integer offset
+                                                @RequestParam(defaultValue ="0") @Max(10) @Min(0)   Integer offset
     ){
         OrderQueryParams orderQueryParams = new OrderQueryParams();
         orderQueryParams.setUsersId(userId);
