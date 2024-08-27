@@ -1,5 +1,6 @@
 package com.serena.springbootmall.controller;
 
+import com.serena.springbootmall.dto.BuyItem;
 import com.serena.springbootmall.dto.CreateOrderRequest;
 import com.serena.springbootmall.dto.OrderQueryParams;
 import com.serena.springbootmall.model.Order;
@@ -67,5 +68,13 @@ public class OrderController {
     public ResponseEntity<Order> deleteOrder(@PathVariable Integer orderId){
         orderServer.deleteOrder(orderId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    @PostMapping("/orders/{orderId}/{orderItem}")
+    public ResponseEntity<Order> updatedOrder(@PathVariable Integer orderId,
+                                              @PathVariable Integer orderItem,
+                                              ){
+        orderServer.updatedOrder(createOrderRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body();
     }
 }
