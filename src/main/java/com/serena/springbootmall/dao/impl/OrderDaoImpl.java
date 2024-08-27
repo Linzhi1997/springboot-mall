@@ -2,11 +2,14 @@ package com.serena.springbootmall.dao.impl;
 
 
 import com.serena.springbootmall.dao.OrderDao;
+import com.serena.springbootmall.dao.ProductDao;
 import com.serena.springbootmall.dto.OrderQueryParams;
 import com.serena.springbootmall.model.Order;
 import com.serena.springbootmall.model.OrderItem;
+import com.serena.springbootmall.model.Product;
 import com.serena.springbootmall.rowmapper.OrderItemRowMapper;
 import com.serena.springbootmall.rowmapper.OrderRowMapper;
+import com.serena.springbootmall.server.OrderServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -19,6 +22,9 @@ import java.util.*;
 public class OrderDaoImpl implements OrderDao {
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
+    private ProductDao productDao;
 
     @Override
     public List<Order> getOrders(OrderQueryParams orderQueryParams) {
@@ -150,12 +156,26 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void deleteOrder(Integer orderId) {
-        String sql = "DELETE FROM `order` WHERE order_id=:orderId";
-        Map<String,Object> map = new HashMap<>();
-        map.put("orderId",orderId);
-        namedParameterJdbcTemplate.update(sql,map);
-        // 加回去
+    public void deleteOrder(Integer orderId,List<OrderItem> orderItemList) {
+
+        String sqlProuduct = "UPDATE product SET stock=:stock WHERE product_id=:productId";
+        String sqlOrderItem = "DELETE FROM order_item WHERE order_item_id=:orderItemId";
+        for (OrderItem orderItem : orderItemList) {
+            // 更新商品目錄數量 (加回去)product
+            Product product = productDao.getProductById(orderItem.getProductId());
+            Map<String, Object> map = new HashMap<>();
+            map.put("stock", product.getStock() + orderItem.getQuantity());
+            map.put("productId", product.getProductId());
+            namedParameterJdbcTemplate.update(sqlProuduct, map);
+            // 一一刪除每筆訂單細項order_item
+            map.put("orderItemId",orderItem.getOrderItemId());
+            namedParameterJdbcTemplate.update(sqlOrderItem,map);
+        }
+        // 刪除整筆訂單order
+        String sql1 = "DELETE FROM `order` WHERE order_id=:orderId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+        namedParameterJdbcTemplate.update(sql1, map);
     }
 }
 

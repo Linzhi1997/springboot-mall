@@ -61,9 +61,11 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
+    // Delete 返回值仍是ResponseEntity<Order>
+    // HttpStatus為 NO_CONTENT
     @DeleteMapping("/orders/{orderId}")
     public ResponseEntity<Order> deleteOrder(@PathVariable Integer orderId){
         orderServer.deleteOrder(orderId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

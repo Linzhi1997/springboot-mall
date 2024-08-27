@@ -20,5 +20,5 @@ public interface OrderDao {
 
     void createOrderItem(Integer orderId, List<OrderItem> orderItemList);
 
-    void deleteOrder(Integer orderId);
+    void deleteOrder(Integer orderId,List<OrderItem> orderItemList);
 }

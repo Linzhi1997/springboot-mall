@@ -118,6 +118,8 @@ public class OrderServerImpl implements OrderServer {
             log.warn("此筆訂單不存在");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        orderDao.deleteOrder(orderId);
+        List<OrderItem> orderItemList = orderDao.getOrderItemsByOrderId(orderId);
+        orderDao.deleteOrder(orderId,orderItemList);
+
     }
 }
