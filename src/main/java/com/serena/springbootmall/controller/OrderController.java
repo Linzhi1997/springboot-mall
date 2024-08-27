@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 @Validated
 @RestController
@@ -22,9 +21,15 @@ public class OrderController {
     @Autowired
     OrderServer orderServer;
 
+    @GetMapping("/orders/{orderId}")
+    public ResponseEntity<Order> getOrderById(@PathVariable Integer orderId){
+        Order order = orderServer.getOrderById(orderId);
+        return ResponseEntity.status(HttpStatus.OK).body(order);
+    }
+
     @PostMapping("/users/{userId}/orders")
     public ResponseEntity<Order> createOrder(@PathVariable Integer userId,
-                                         @RequestBody @Valid CreateOrderRequest createOrderRequest) {
+                                            @RequestBody @Valid CreateOrderRequest createOrderRequest) {
 
         Integer orderId = orderServer.createOrder(userId, createOrderRequest);
 
@@ -55,5 +60,10 @@ public class OrderController {
         page.setResults(orderlist);
 
         return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
+    @DeleteMapping("/orders/{orderId}")
+    public ResponseEntity<Order> deleteOrder(@PathVariable Integer orderId){
+        orderServer.deleteOrder(orderId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

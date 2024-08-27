@@ -110,4 +110,14 @@ public class OrderServerImpl implements OrderServer {
         order.setOrderItemList(orderItemList);
         return order;
     }
+
+    @Override
+    public void deleteOrder(Integer orderId) {
+        Order order = orderDao.getOrderById(orderId);
+        if(order==null){
+            log.warn("此筆訂單不存在");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        orderDao.deleteOrder(orderId);
+    }
 }

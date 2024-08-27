@@ -148,5 +148,14 @@ public class OrderDaoImpl implements OrderDao {
 
         namedParameterJdbcTemplate.batchUpdate(sql, parameterSources);
     }
+
+    @Override
+    public void deleteOrder(Integer orderId) {
+        String sql = "DELETE FROM `order` WHERE order_id=:orderId";
+        Map<String,Object> map = new HashMap<>();
+        map.put("orderId",orderId);
+        namedParameterJdbcTemplate.update(sql,map);
+        // 加回去
+    }
 }
 

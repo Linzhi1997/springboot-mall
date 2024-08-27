@@ -15,4 +15,6 @@ public interface OrderServer {
     Integer createOrder(Integer userId, CreateOrderRequest createOrderRequest);
 
     Order getOrderById(Integer userId);
+
+    void deleteOrder(Integer orderId);
 }

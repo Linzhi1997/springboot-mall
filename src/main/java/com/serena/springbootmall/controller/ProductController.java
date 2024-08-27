@@ -17,7 +17,7 @@ import java.util.List;
 
 @Validated //使@Max(100) @Min(0)生效
 @RestController
-public class ProductControllerImpl {
+public class ProductController {
 
     @Autowired
     ProductServer productServer;

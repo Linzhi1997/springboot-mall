@@ -50,7 +50,7 @@ public class UserControllerTest {
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.userId", notNullValue()))
-                .andExpect(jsonPath("$.email",equalTo("test1@gmail.com")))
+                .andExpect(jsonPath("$.e-mail",equalTo("test1@gmail.com")))
                 .andExpect(jsonPath("$.createdDate",notNullValue()))
                 .andExpect(jsonPath("$.lastModifiedDate",notNullValue()));
         // 檢查密碼不為明碼
