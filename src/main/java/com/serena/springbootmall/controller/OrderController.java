@@ -69,12 +69,5 @@ public class OrderController {
         orderServer.deleteOrder(orderId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-    @PostMapping("/orders/{orderId}/{orderItem}")
-    public ResponseEntity<Order> updatedOrder(@PathVariable Integer orderId,
-                                              @PathVariable Integer orderItem,
-                                              ){
-        orderServer.updatedOrder(createOrderRequest);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body();
-    }
 }

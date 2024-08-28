@@ -9,7 +9,6 @@ import com.serena.springbootmall.model.OrderItem;
 import com.serena.springbootmall.model.Product;
 import com.serena.springbootmall.rowmapper.OrderItemRowMapper;
 import com.serena.springbootmall.rowmapper.OrderRowMapper;
-import com.serena.springbootmall.server.OrderServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
