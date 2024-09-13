@@ -1,16 +1,12 @@
 package com.serena.springbootmall.model;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 public class OrderItem {
-    // one order 對應 many order_item
     private Integer orderItemId;
     private Integer orderId;
     private Integer productId;
     private Integer quantity;
     private Integer amount;
-    // 擴充 (join other table)
+    // 擴充
     private String productName;
     private String imageUrl;
 

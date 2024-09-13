@@ -7,11 +7,9 @@ import jakarta.validation.constraints.Email;
 import java.util.Date;
 
 public class User {
-
     private Integer userId;
-
     @Email
-    @JsonProperty("e-mail") // 只影響RETRUN的結果
+    @JsonProperty("e-mail")
     private String  email;
     @JsonIgnore
     private String  password;

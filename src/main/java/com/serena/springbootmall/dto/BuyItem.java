@@ -3,7 +3,6 @@ package com.serena.springbootmall.dto;
 import jakarta.validation.constraints.NotNull;
 
 public class BuyItem {
-    // 一個productId 訂單資訊
     @NotNull
     private Integer productId;
     @NotNull

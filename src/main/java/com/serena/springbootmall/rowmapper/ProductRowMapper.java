@@ -6,29 +6,21 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.*;
 
 
-public class ProductRowMapper implements RowMapper<Product> // 表示要轉換成 Product 的形式
+public class ProductRowMapper implements RowMapper<Product>
 {
-
     @Override
     public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
         Product product = new Product();
-        // ResultSet取得SELECT出來的那些數據
         product.setProductId(rs.getInt("product_id"));
         product.setProductName(rs.getString("product_name"));
-
-        // 將資料庫中的字串值轉換為枚舉類型
-        String categoryStr = rs.getString("category"); // 從database取出來是String類型的字串
-        ProductCategory category = ProductCategory.valueOf(categoryStr); // .valueOf() 去Enum裡面找對應值
-        product.setCategory(category); // 到set方法內做設定
-//        product.setCategory(ProductCategory.valueOf(rs.getString("category")));
-
+        product.setCategory(ProductCategory.valueOf(rs.getString("category")));
         product.setImageUrl(rs.getString("image_url"));
         product.setPrice(rs.getInt("price"));
         product.setStock(rs.getInt("stock"));
         product.setDescription(rs.getString("description"));
         product.setCreateDate(rs.getTimestamp("create_date"));
         product.setLastModifiedDate(rs.getTimestamp("last_modified_date"));
-        // set完畢 return product
+
         return product;
     }
 }

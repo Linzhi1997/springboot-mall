@@ -48,6 +48,7 @@ public class ProductDaoImpl implements ProductDao {
         map.put("offset",productQueryParams.getOffset());
 
         // 查詢一筆資料 返回object 查詢多筆資料 返回List<Object>
+        // RowMapper內有的資料 sql必需也要有
         List<Product> products = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
         return products;
@@ -73,33 +74,23 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Integer createProduct(ProductRequest productRequest){
-        // sql 記得帶上時間
-        // sql product(table row_name) value(:變數) map.put("變數",productRequest get前端對應的json參數)
-        // productRequest get的參數對應到變數 變數寫入table (而ProductCategory無法對應varchar,所以需轉換成String)
         String sql ="INSERT INTO product (product_name, category, image_url, price, stock, description,create_date, last_modified_date ) " +
                 "VALUES (:productName,:category,:imageUrl,:price,:stock,:description,:createDate,:lastModifiedDate)";
         Map<String,Object> map =new HashMap<>();
-        map.put("productName",productRequest.getProductName()); // 輸出{productName="Toyota"}
-        map.put("category",productRequest.getCategory().toString()); // 輸出{category="CAR"}
-        // (String類,String類) productRequest是ProductCategory類()enum
-        // 需要.toString() 轉換
-        // 輸出{category=CAR}
+        map.put("productName",productRequest.getProductName());
+        map.put("category",productRequest.getCategory().toString());
         map.put("imageUrl",productRequest.getImageUrl());
-        map.put("price",productRequest.getPrice());// 輸出{price=28000}
+        map.put("price",productRequest.getPrice());
         map.put("stock",productRequest.getStock());
         map.put("description",productRequest.getDescription());
 
-        // 記錄當下時間點
         Date now = new Date();
         map.put("createDate",now);
         map.put("lastModifiedDate",now);
-        // 維持順序
         KeyHolder keyHolder =new GeneratedKeyHolder();
-
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map),keyHolder);
-
         int productId = keyHolder.getKey().intValue();
-        // 回傳id
+
         return productId;
     }
 
@@ -110,7 +101,7 @@ public class ProductDaoImpl implements ProductDao {
                 "WHERE product_id=:productId";
         // 要更新lastModifiedDate的值
         Map<String,Object> map = new HashMap<>();
-        map.put("productId",productId); //id也要設
+        map.put("productId",productId);
 
         map.put("productName",productRequest.getProductName());
         map.put("category",productRequest.getCategory().toString());
@@ -145,19 +136,17 @@ public class ProductDaoImpl implements ProductDao {
 
         namedParameterJdbcTemplate.update(sql, map);
     }
-    // private 只有這個class可使用
-    // Filter 一個method時優先使用private
-    // 限制方法"使用範圍"，方便"後續維護" !!!!!!!!!
+
     private String addFilterSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams) {
         // 查詢條件
         if (productQueryParams.getProductCategory() != null) {
-            sql = sql + " AND category = :productCategory"; // AND前面要空格
-            map.put("productCategory", productQueryParams.getProductCategory().name()); // {sql變數productCategory,前端傳入具體值}
+            sql = sql + " AND category = :productCategory";
+            map.put("productCategory", productQueryParams.getProductCategory().name());
         }
 
         if (productQueryParams.getSearch() != null) {
             sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParams.getSearch() + "%"); // "%"要加在map這裡，JdbcTemplate的限制
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
         }
         return sql;
     }

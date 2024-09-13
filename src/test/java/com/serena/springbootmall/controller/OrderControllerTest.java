@@ -1,8 +1,11 @@
 package com.serena.springbootmall.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.serena.springbootmall.dto.BuyItem;
-import com.serena.springbootmall.dto.CreateOrderRequest;
+import com.serena.springbootmall.dto.OrderRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,11 +33,17 @@ public class OrderControllerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    @BeforeEach
+    public void setup() {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    }
+
     // 創建訂單
     @Transactional
     @Test
     public void createOrder_success() throws Exception {
-        CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+        OrderRequest orderRequest = new OrderRequest();
         List<BuyItem> buyItemList = new ArrayList<>();
 
         BuyItem buyItem1 = new BuyItem();
@@ -47,9 +56,9 @@ public class OrderControllerTest {
         buyItem2.setQuantity(2);
         buyItemList.add(buyItem2);
 
-        createOrderRequest.setBuyItemList(buyItemList);
+        orderRequest.setBuyItemList(buyItemList);
 
-        String json = objectMapper.writeValueAsString(createOrderRequest);
+        String json = objectMapper.writeValueAsString(orderRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/users/{userId}/orders", 1)
@@ -69,11 +78,11 @@ public class OrderControllerTest {
     @Transactional
     @Test
     public void createOrder_illegalArgument_emptyBuyItemList() throws Exception {
-        CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+        OrderRequest orderRequest = new OrderRequest();
         List<BuyItem> buyItemList = new ArrayList<>();
-        createOrderRequest.setBuyItemList(buyItemList);
+        orderRequest.setBuyItemList(buyItemList);
 
-        String json = objectMapper.writeValueAsString(createOrderRequest);
+        String json = objectMapper.writeValueAsString(orderRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/users/{userId}/orders", 1)
@@ -87,7 +96,7 @@ public class OrderControllerTest {
     @Transactional
     @Test
     public void createOrder_userNotExist() throws Exception {
-        CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+        OrderRequest orderRequest = new OrderRequest();
         List<BuyItem> buyItemList = new ArrayList<>();
 
         BuyItem buyItem1 = new BuyItem();
@@ -95,9 +104,9 @@ public class OrderControllerTest {
         buyItem1.setQuantity(1);
         buyItemList.add(buyItem1);
 
-        createOrderRequest.setBuyItemList(buyItemList);
+        orderRequest.setBuyItemList(buyItemList);
 
-        String json = objectMapper.writeValueAsString(createOrderRequest);
+        String json = objectMapper.writeValueAsString(orderRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/users/{userId}/orders", 100)
@@ -111,7 +120,7 @@ public class OrderControllerTest {
     @Transactional
     @Test
     public void createOrder_productNotExist() throws Exception {
-        CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+        OrderRequest orderRequest = new OrderRequest();
         List<BuyItem> buyItemList = new ArrayList<>();
 
         BuyItem buyItem1 = new BuyItem();
@@ -119,9 +128,9 @@ public class OrderControllerTest {
         buyItem1.setQuantity(1);
         buyItemList.add(buyItem1);
 
-        createOrderRequest.setBuyItemList(buyItemList);
+        orderRequest.setBuyItemList(buyItemList);
 
-        String json = objectMapper.writeValueAsString(createOrderRequest);
+        String json = objectMapper.writeValueAsString(orderRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/users/{userId}/orders", 1)
@@ -135,7 +144,7 @@ public class OrderControllerTest {
     @Transactional
     @Test
     public void createOrder_stockNotEnough() throws Exception {
-        CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+        OrderRequest orderRequest = new OrderRequest();
         List<BuyItem> buyItemList = new ArrayList<>();
 
         BuyItem buyItem1 = new BuyItem();
@@ -143,9 +152,9 @@ public class OrderControllerTest {
         buyItem1.setQuantity(10000);
         buyItemList.add(buyItem1);
 
-        createOrderRequest.setBuyItemList(buyItemList);
+        orderRequest.setBuyItemList(buyItemList);
 
-        String json = objectMapper.writeValueAsString(createOrderRequest);
+        String json = objectMapper.writeValueAsString(orderRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/users/{userId}/orders", 1)

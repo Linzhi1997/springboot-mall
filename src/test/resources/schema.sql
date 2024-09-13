@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS product
     price              INT          NOT NULL,
     stock              INT          NOT NULL,
     description        VARCHAR(1024),
-    create_date       TIMESTAMP    NOT NULL,
+    create_date        TIMESTAMP    NOT NULL,
     last_modified_date TIMESTAMP    NOT NULL
     );
 -- user 不能使用user作為H2資料庫的命名

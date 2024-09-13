@@ -1,7 +1,9 @@
 package com.serena.springbootmall.server;
 
-import com.serena.springbootmall.dto.CreateOrderRequest;
+import com.serena.springbootmall.dto.BuyItem;
+import com.serena.springbootmall.dto.OrderRequest;
 import com.serena.springbootmall.dto.OrderQueryParams;
+import com.serena.springbootmall.dto.ReturnItem;
 import com.serena.springbootmall.model.Order;
 
 import java.util.List;
@@ -12,9 +14,9 @@ public interface OrderServer {
 
     Integer countOrder(OrderQueryParams orderQueryParams);
 
-    Integer createOrder(Integer userId, CreateOrderRequest createOrderRequest);
+    Integer createOrder(Integer userId, OrderRequest<BuyItem> orderRequest);
 
     Order getOrderById(Integer userId);
 
-    void deleteOrder(Integer orderId);
+    void returnOrder(Integer orderId, OrderRequest<ReturnItem> orderRequest);
 }

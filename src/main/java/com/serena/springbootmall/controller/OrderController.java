@@ -1,8 +1,9 @@
 package com.serena.springbootmall.controller;
 
 import com.serena.springbootmall.dto.BuyItem;
-import com.serena.springbootmall.dto.CreateOrderRequest;
+import com.serena.springbootmall.dto.OrderRequest;
 import com.serena.springbootmall.dto.OrderQueryParams;
+import com.serena.springbootmall.dto.ReturnItem;
 import com.serena.springbootmall.model.Order;
 import com.serena.springbootmall.server.OrderServer;
 import com.serena.springbootmall.util.Page;
@@ -30,9 +31,9 @@ public class OrderController {
 
     @PostMapping("/users/{userId}/orders")
     public ResponseEntity<Order> createOrder(@PathVariable Integer userId,
-                                            @RequestBody @Valid CreateOrderRequest createOrderRequest) {
+                                            @RequestBody @Valid OrderRequest<BuyItem> orderRequest) {
 
-        Integer orderId = orderServer.createOrder(userId, createOrderRequest);
+        Integer orderId = orderServer.createOrder(userId, orderRequest);
 
         Order order = orderServer.getOrderById(orderId);
 
@@ -52,8 +53,6 @@ public class OrderController {
         // 取得訂單總數
         Integer count = orderServer.countOrder(orderQueryParams);
         // 分頁
-        // Page是一個自創的generic
-        // 以下設定返回值
         Page<Order> page = new Page<>();
         page.setLimit(limit);
         page.setOffset(offset);
@@ -62,11 +61,11 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
-    // Delete 返回值仍是ResponseEntity<Order>
-    // HttpStatus為 NO_CONTENT
+
     @DeleteMapping("/orders/{orderId}")
-    public ResponseEntity<Order> deleteOrder(@PathVariable Integer orderId){
-        orderServer.deleteOrder(orderId);
+    public ResponseEntity<Order> returnOrder(@PathVariable Integer orderId,
+                                             @RequestBody @Valid OrderRequest<ReturnItem> orderRequest){
+        orderServer.returnOrder(orderId,orderRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

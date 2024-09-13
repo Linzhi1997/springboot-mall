@@ -1,6 +1,5 @@
 package com.serena.springbootmall.server;
 
-import com.serena.springbootmall.constant.ProductCategory;
 import com.serena.springbootmall.dto.ProductQueryParams;
 import com.serena.springbootmall.dto.ProductRequest;
 import com.serena.springbootmall.model.Product;
