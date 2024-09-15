@@ -1,5 +1,6 @@
 package com.serena.springbootmall.server.impl;
 
+import com.serena.springbootmall.constant.OrderStatus;
 import com.serena.springbootmall.dao.*;
 import com.serena.springbootmall.dto.*;
 import com.serena.springbootmall.model.*;
@@ -59,6 +60,12 @@ public class ReturnOrderServerImpl implements ReturnOrderServer {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             } else if (returnQuantity < originalQuantity){
                 isFullyReturned = false; // 判斷是否全部退回
+            }
+
+            if (isFullyReturned == false) {
+                orderDao.update(orderId, OrderStatus.PARTIALLY_RETURNED);
+            } else {
+                orderDao.update(orderId, OrderStatus.FULLY_RETURNED);
             }
 
             // 退回庫存

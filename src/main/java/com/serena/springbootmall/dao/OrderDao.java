@@ -1,5 +1,6 @@
 package com.serena.springbootmall.dao;
 
+import com.serena.springbootmall.constant.OrderStatus;
 import com.serena.springbootmall.dto.OrderQueryParams;
 import com.serena.springbootmall.dto.OrderRequest;
 import com.serena.springbootmall.model.Order;
@@ -23,4 +24,6 @@ public interface OrderDao {
     List<OrderItem> getOrderItemsByOrderId(Integer orderId);
 
     Integer countOrder(OrderQueryParams orderQueryParams);
+
+    void update(Integer orderId, OrderStatus orderStatus);
 }

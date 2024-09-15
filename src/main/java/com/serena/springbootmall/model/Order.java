@@ -1,11 +1,14 @@
 package com.serena.springbootmall.model;
 
+import com.serena.springbootmall.constant.OrderStatus;
+
 import java.util.*;
 
 public class Order {
     private Integer orderId;
     private Integer userId;
     private Integer totalAmount;
+    private OrderStatus orderStatus;
     private Date createdDate;
     private Date lastModifiedDate;
 
@@ -41,6 +44,14 @@ public class Order {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public Date getCreatedDate() {
