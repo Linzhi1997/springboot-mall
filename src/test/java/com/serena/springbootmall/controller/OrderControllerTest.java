@@ -56,7 +56,7 @@ public class OrderControllerTest {
         buyItem2.setQuantity(2);
         buyItemList.add(buyItem2);
 
-        orderRequest.setBuyItemList(buyItemList);
+        orderRequest.setItemList(buyItemList);
 
         String json = objectMapper.writeValueAsString(orderRequest);
 
@@ -80,7 +80,7 @@ public class OrderControllerTest {
     public void createOrder_illegalArgument_emptyBuyItemList() throws Exception {
         OrderRequest orderRequest = new OrderRequest();
         List<BuyItem> buyItemList = new ArrayList<>();
-        orderRequest.setBuyItemList(buyItemList);
+        orderRequest.setItemList(buyItemList);
 
         String json = objectMapper.writeValueAsString(orderRequest);
 
@@ -104,7 +104,7 @@ public class OrderControllerTest {
         buyItem1.setQuantity(1);
         buyItemList.add(buyItem1);
 
-        orderRequest.setBuyItemList(buyItemList);
+        orderRequest.setItemList(buyItemList);
 
         String json = objectMapper.writeValueAsString(orderRequest);
 
@@ -128,7 +128,7 @@ public class OrderControllerTest {
         buyItem1.setQuantity(1);
         buyItemList.add(buyItem1);
 
-        orderRequest.setBuyItemList(buyItemList);
+        orderRequest.setItemList(buyItemList);
 
         String json = objectMapper.writeValueAsString(orderRequest);
 
@@ -152,7 +152,7 @@ public class OrderControllerTest {
         buyItem1.setQuantity(10000);
         buyItemList.add(buyItem1);
 
-        orderRequest.setBuyItemList(buyItemList);
+        orderRequest.setItemList(buyItemList);
 
         String json = objectMapper.writeValueAsString(orderRequest);
 

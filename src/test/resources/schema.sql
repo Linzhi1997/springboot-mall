@@ -37,3 +37,21 @@ CREATE TABLE IF NOT EXISTS order_item
     quantity      INT NOT NULL,
     amount        INT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS return_order
+(
+    return_order_id           INT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id                   INT       NOT NULL,
+    order_id                  INT       NOT NULL,
+    refund_total_amount       INT       NOT NULL,
+    created_date              TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS return_order_item
+(
+    return_order_item_id    INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    return_order_id         INT NOT NULL,
+    product_id              INT NOT NULL,
+    return_quantity         INT NOT NULL,
+    refund_amount           INT NOT NULL
+);

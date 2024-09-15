@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ReturnOrder {
-    private Integer ReturnOrderId;
+    private Integer returnOrderId;
     private Integer userId;
     private Integer orderId;
     private Integer refundTotalAmount;
@@ -13,11 +13,11 @@ public class ReturnOrder {
     private List<ReturnOrderItem> returnOrderList;
 
     public Integer getReturnOrderId() {
-        return ReturnOrderId;
+        return returnOrderId;
     }
 
     public void setReturnOrderId(Integer returnOrderId) {
-        ReturnOrderId = returnOrderId;
+        this.returnOrderId = returnOrderId;
     }
 
     public Integer getOrderId() {

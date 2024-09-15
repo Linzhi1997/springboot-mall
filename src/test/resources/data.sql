@@ -10,6 +10,7 @@ INSERT INTO product (product_name, category, image_url, price, stock, descriptio
 -- user
 INSERT INTO `user` (email, password, created_date, last_modified_date) VALUES ('user1@gmail.com', '202cb962ac59075b964b07152d234b70', '2022-06-30 10:30:00', '2022-06-30 10:30:00');
 INSERT INTO `user` (email, password, created_date, last_modified_date) VALUES ('user2@gmail.com', '202cb962ac59075b964b07152d234b70', '2022-06-30 10:40:00', '2022-06-30 10:40:00');
+INSERT INTO `user` (email, password, created_date, last_modified_date) VALUES ('user3@gmail.com', '202cb962ac59075b964b07152d234b70', '2022-06-30 10:50:00', '2022-06-30 10:50:00');
 
 -- order, order_item
 INSERT INTO `order` (user_id, total_amount, created_date, last_modified_date) VALUES (1, 500690, '2022-06-30 11:10:00', '2022-06-30 11:10:00');
@@ -19,3 +20,12 @@ INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES (1, 5, 1,
 
 INSERT INTO `order` (user_id, total_amount, created_date, last_modified_date) VALUES (1, 100000, '2022-06-30 12:03:00', '2022-06-30 12:03:00');
 INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES (2, 4, 1, 100000);
+
+INSERT INTO `order` (user_id, total_amount, created_date, last_modified_date) VALUES (2, 100000, '2022-06-30 12:03:00', '2022-06-30 12:03:00');
+INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES (2, 4, 1, 100000);
+
+INSERT INTO `order` (user_id, total_amount, created_date, last_modified_date) VALUES (3, 100000, '2022-06-30 12:03:00', '2022-06-30 12:03:00');
+INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES (2, 4, 1, 100000);
+
+INSERT INTO return_order (user_id, order_id,refund_total_amount, created_date) VALUES (2, 2, 100000, '2022-07-04 12:00:00');
+INSERT INTO return_order_item (return_order_id, product_id, return_quantity, refund_amount) VALUES (1, 4, 1, 100000);
