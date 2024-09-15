@@ -5,6 +5,7 @@ import com.serena.springbootmall.dto.OrderRequest;
 import com.serena.springbootmall.dto.OrderQueryParams;
 import com.serena.springbootmall.dto.ReturnItem;
 import com.serena.springbootmall.model.Order;
+import com.serena.springbootmall.model.ReturnOrder;
 import com.serena.springbootmall.server.OrderServer;
 import com.serena.springbootmall.util.Page;
 import jakarta.validation.Valid;
@@ -62,11 +63,6 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
-    @DeleteMapping("/orders/{orderId}")
-    public ResponseEntity<Order> returnOrder(@PathVariable Integer orderId,
-                                             @RequestBody @Valid OrderRequest<ReturnItem> orderRequest){
-        orderServer.returnOrder(orderId,orderRequest);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+
 
 }
