@@ -70,6 +70,7 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.orderId", notNullValue()))
                 .andExpect(jsonPath("$.userId", equalTo(1)))
                 .andExpect(jsonPath("$.totalAmount", equalTo(750)))
+                .andExpect(jsonPath("$.orderStatus",equalTo("待處理")))
                 .andExpect(jsonPath("$.orderItemList", hasSize(2)))
                 .andExpect(jsonPath("$.createdDate", notNullValue()))
                 .andExpect(jsonPath("$.lastModifiedDate", notNullValue()));
@@ -180,12 +181,14 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.results[0].orderId", notNullValue()))
                 .andExpect(jsonPath("$.results[0].userId", equalTo(1)))
                 .andExpect(jsonPath("$.results[0].totalAmount", equalTo(100000)))
-                .andExpect(jsonPath("$.results[0].orderItemList", hasSize(1)))
+                .andExpect(jsonPath("$.results[0].orderStatus",equalTo("待處理")))
+                .andExpect(jsonPath("$.results[0].orderItemList", hasSize(3)))
                 .andExpect(jsonPath("$.results[0].createdDate", notNullValue()))
                 .andExpect(jsonPath("$.results[0].lastModifiedDate", notNullValue()))
                 .andExpect(jsonPath("$.results[1].orderId", notNullValue()))
                 .andExpect(jsonPath("$.results[1].userId", equalTo(1)))
                 .andExpect(jsonPath("$.results[1].totalAmount", equalTo(500690)))
+                .andExpect(jsonPath("$.results[1].orderStatus",equalTo("待處理")))
                 .andExpect(jsonPath("$.results[1].orderItemList", hasSize(3)))
                 .andExpect(jsonPath("$.results[1].createdDate", notNullValue()))
                 .andExpect(jsonPath("$.results[1].lastModifiedDate", notNullValue()));
@@ -209,7 +212,7 @@ public class OrderControllerTest {
     @Test
     public void getOrders_userHasNoOrder() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/users/{userId}/orders", 2);
+                .get("/users/{userId}/orders", 4);
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
