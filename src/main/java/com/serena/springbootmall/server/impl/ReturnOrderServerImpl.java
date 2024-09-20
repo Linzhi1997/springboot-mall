@@ -33,15 +33,16 @@ public class ReturnOrderServerImpl implements ReturnOrderServer {
             log.warn("此筆訂單不存在");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-
+        if(order.getOrderStatus()==OrderStatus.RETURNE_IN_PROGRESS||order.getOrderStatus()==OrderStatus.RETURNE_COMPLETED){
+            log.warn("此筆訂單order: {} 已在退貨流程中",orderId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
         // 退貨訂單金額
         int returnTotalAmount = 0;
         // 退貨細項
         List<ReturnItem> returnItemList = orderRequest.getItemList();
         // 創建退貨單
         List<ReturnOrderItem> returnOrderItemList = new ArrayList<>();
-
-        boolean isFullyReturned = true;
 
         // 遍歷退貨細項
         for (ReturnItem returnItem : returnItemList) {
@@ -58,15 +59,9 @@ public class ReturnOrderServerImpl implements ReturnOrderServer {
             } else if (returnQuantity > originalQuantity) {
                 log.warn("退貨數量 大於原訂單數量");
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-            } else if (returnQuantity < originalQuantity){
-                isFullyReturned = false; // 判斷是否全部退回
             }
-
-            if (isFullyReturned == false) {
-                orderDao.update(orderId, OrderStatus.PARTIALLY_RETURNED);
-            } else {
-                orderDao.update(orderId, OrderStatus.FULLY_RETURNED);
-            }
+            // 更改訂單狀態
+            orderDao.update(orderId, OrderStatus.RETURNE_IN_PROGRESS);
 
             // 退回庫存
             Product product = productDao.getProductById(originalProductId);

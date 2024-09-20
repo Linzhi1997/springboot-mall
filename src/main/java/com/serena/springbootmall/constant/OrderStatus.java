@@ -11,8 +11,8 @@ public enum OrderStatus {
     SHIPPED,
     @JsonProperty("已送達")
     DELIVERED,
-    @JsonProperty("退貨申請 / 部分退貨")
-    PARTIALLY_RETURNED,
-    @JsonProperty("退貨申請 / 全部退貨")
-    FULLY_RETURNED
+    @JsonProperty("退貨申請 / 處理中")
+    RETURNE_IN_PROGRESS,
+    @JsonProperty("退貨完成")
+    RETURNE_COMPLETED
 }
